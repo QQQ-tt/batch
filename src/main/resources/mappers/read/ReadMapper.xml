@@ -2,4 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.batch.mapper.read.ReadMapper">
 
+    <select id="selectRead" resultType="com.example.batch.entity.read.Read">
+
+    </select>
 </mapper>
