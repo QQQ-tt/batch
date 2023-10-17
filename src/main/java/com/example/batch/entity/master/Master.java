@@ -1,4 +1,4 @@
-package com.example.batch.entity.read;
+package com.example.batch.entity.master;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -21,7 +21,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("read")
-public class Read extends BaseEntity implements Serializable {
+public class Master extends BaseEntity implements Serializable {
 
     @TableField("name")
     private String name;

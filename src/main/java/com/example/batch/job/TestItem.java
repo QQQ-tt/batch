@@ -8,21 +8,20 @@ import org.mybatis.spring.batch.MyBatisBatchItemWriter;
 import org.mybatis.spring.batch.MyBatisCursorItemReader;
 import org.mybatis.spring.batch.builder.MyBatisBatchItemWriterBuilder;
 import org.mybatis.spring.batch.builder.MyBatisCursorItemReaderBuilder;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author qtx
  * @since 2023/10/17
  */
 @Slf4j
-@Component
+@Configuration
 public class TestItem {
 
-    @Bean("itemReaderMybatis")
-    private MyBatisCursorItemReader<Read> itemReader(@Qualifier("readSqlSessionFactory") SqlSessionFactory readSqlSessionFactory) {
+    @Bean(name = "itemReaderMybatis")
+    public MyBatisCursorItemReader<Read> itemReaderMybatis(@Qualifier("readSqlSessionFactory") SqlSessionFactory readSqlSessionFactory) {
         log.info("itemReader~~~~~~~~~~~~~");
         return new MyBatisCursorItemReaderBuilder<Read>()
                 .sqlSessionFactory(readSqlSessionFactory)
@@ -32,8 +31,8 @@ public class TestItem {
     }
 
 
-    @Bean("itemWriterMybatis")
-    private MyBatisBatchItemWriter<Write> itemWriter(@Qualifier("readSqlSessionFactory") SqlSessionFactory writeSqlSessionFactory) {
+    @Bean(name = "itemWriterMybatis")
+    public MyBatisBatchItemWriter<Write> itemWriterMybatis(@Qualifier("readSqlSessionFactory") SqlSessionFactory writeSqlSessionFactory) {
         log.info("itemWriter~~~~~~~~~~~~~");
         return new MyBatisBatchItemWriterBuilder<Write>()
                 .sqlSessionFactory(writeSqlSessionFactory)

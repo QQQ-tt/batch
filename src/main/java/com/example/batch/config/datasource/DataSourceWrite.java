@@ -1,14 +1,14 @@
-package com.example.batch.config;
+package com.example.batch.config.datasource;
 
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.Data;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
@@ -16,34 +16,22 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
  * @author qtx
  * @since 2023/10/7 20:53
  */
-@Data
-@Configurable
-@ConfigurationProperties(prefix = "spring.datasource-write")
-@MapperScan(basePackages = "com.example.mapper.write", sqlSessionFactoryRef = "readSqlSessionFactory")
+@Configuration
+@MapperScan(basePackages = "com.example.batch.mapper.write", sqlSessionFactoryRef = "writeSqlSessionFactory")
 public class DataSourceWrite {
 
-    private String username;
-
-    private String password;
-
-    private String driverClassName;
-
-    private String url;
-
-    private static final String dataSourceName = "writeDataSource";
-
-    @Bean(dataSourceName)
+    @Bean(name = "writeDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.write")
     public HikariDataSource writeDataSource(){
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-        dataSource.setDriverClassName(driverClassName);
-        dataSource.setJdbcUrl(url);
-        return dataSource;
+        HikariDataSource build = DataSourceBuilder.create()
+                .type(HikariDataSource.class)
+                .build();
+        build.setPoolName("write");
+        return build;
     }
 
-    @Bean("writeSqlSessionFactory")
-    public SqlSessionFactory sqlSessionFactory(@Qualifier(dataSourceName) HikariDataSource dataSource) throws Exception {
+    @Bean(name = "writeSqlSessionFactory")
+    public SqlSessionFactory writeSqlSessionFactory(@Qualifier("writeDataSource") HikariDataSource dataSource) throws Exception {
         MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         // 这个是指定加载的xml 文件路径。
@@ -53,8 +41,7 @@ public class DataSourceWrite {
 
 
     @Bean("writeTransactionManager")
-    public DataSourceTransactionManager transactionManager(@Qualifier(dataSourceName) HikariDataSource dataSource){
+    public DataSourceTransactionManager transactionManager(@Qualifier("writeDataSource") HikariDataSource dataSource){
         return new DataSourceTransactionManager(dataSource);
     }
-
 }

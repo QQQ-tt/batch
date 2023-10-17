@@ -7,14 +7,14 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author qtx
  * @since 2023/10/8 19:22
  */
 @Slf4j
-@Component
+@Configuration
 public class TestJob {
 
     private final JobRepository jobRepository;
@@ -30,7 +30,5 @@ public class TestJob {
                 .start(step)
                 .build();
     }
-
-
 
 }

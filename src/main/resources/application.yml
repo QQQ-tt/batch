@@ -2,30 +2,24 @@ spring:
   application:
     name: job
   datasource:
-    name: batch
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${vm_ip:127.0.0.1}:3306/${spring.datasource.name}?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: ${mysql_password:123456qaz}
-    hikari:
-      pool-name: MyPool
-      connection-timeout: 60000
-      maximum-pool-size: 60
-      minimum-idle: 10
-      idle-timeout: 60000
-      validation-timeout: 3000
-      max-lifetime: 180000
-      connection-test-query: select 1
-  datasource-read:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${vm_ip:127.0.0.1}:3306/read?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: ${mysql_password:123456qaz}
-  datasource-write:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${vm_ip:127.0.0.1}:3306/write?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: ${mysql_password:123456qaz}
+    master:
+      name: batch
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbcUrl: jdbc:mysql://${vm_ip:127.0.0.1}:3306/${spring.datasource.master.name}?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+      username: root
+      password: ${mysql_password:123456qaz}
+    read:
+      name: read
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbcUrl: jdbc:mysql://${vm_ip:127.0.0.1}:3306/${spring.datasource.read.name}?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+      username: root
+      password: ${mysql_password:123456qaz}
+    write:
+      name: write
+      driverClassName: com.mysql.cj.jdbc.Driver
+      jdbcUrl: jdbc:mysql://${vm_ip:127.0.0.1}:3306/${spring.datasource.write.name}?characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+      username: root
+      password: ${mysql_password:123456qaz}
 
 mybatis-plus:
   # xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
