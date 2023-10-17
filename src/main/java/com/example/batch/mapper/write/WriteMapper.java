@@ -17,6 +17,6 @@ import java.util.List;
 @Mapper
 public interface WriteMapper extends BaseMapper<Write> {
 
-    int inertWrite(List<Write> list);
+    int inertWrite(Write item);
 
 }

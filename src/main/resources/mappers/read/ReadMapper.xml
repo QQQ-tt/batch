@@ -3,6 +3,7 @@
 <mapper namespace="com.example.batch.mapper.read.ReadMapper">
 
     <select id="selectRead" resultType="com.example.batch.entity.read.Read">
-
+        select `name`,`code` from read
     </select>
+
 </mapper>
