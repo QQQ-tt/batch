@@ -29,8 +29,10 @@ public class TestController {
 
     @RequestMapping("/handle")
     public void handle() throws Exception {
-        JobParameters parameters = new JobParametersBuilder().addLocalDateTime("date", LocalDateTime.now())
-                .toJobParameters();
+        JobParameters parameters =
+                new JobParametersBuilder().addLocalDateTime("time", LocalDateTime.now())
+                        .addString("name", "Qtx")
+                        .toJobParameters();
         jobLauncher.run(job, parameters);
     }
 }

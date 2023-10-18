@@ -35,7 +35,7 @@ public class TestStep {
     public Step step(@Qualifier("itemReaderMybatis") MyBatisCursorItemReader<Read> itemReaderMybatis,
                      @Qualifier("itemWriterMybatis") MyBatisBatchItemWriter<Write> itemWriterMybatis) {
         return new StepBuilder("testStepRead", jobRepository)
-                .<Read, Write>chunk(500, transactionManager)
+                .<Read, Write>chunk(100, transactionManager)
                 .reader(itemReaderMybatis)
                 .processor(item -> Write.builder()
                         .code(item.getCode())
