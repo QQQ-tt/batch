@@ -24,9 +24,9 @@ public class TestJob {
     }
 
 
-    @Bean
+    @Bean(name = "footballJob")
     public Job footballJob(@Qualifier("testStepRead") Step step) {
-        return new JobBuilder("footballJob", jobRepository).preventRestart()
+        return new JobBuilder("footballJob", jobRepository)
                 .start(step)
                 .build();
     }

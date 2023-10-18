@@ -3,7 +3,7 @@
 <mapper namespace="com.example.batch.mapper.write.WriteMapper">
 
     <insert id="inertWrite">
-        INSERT INTO `write` (`name`,`code`) VALUES (#{item.name},#{item.code})
+        INSERT INTO `write` (`name`,`code`) VALUES (#{name},#{code})
     </insert>
 
 </mapper>

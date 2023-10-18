@@ -4,6 +4,7 @@ import com.example.batch.entity.read.Read;
 import com.example.batch.entity.write.Write;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.batch.MyBatisBatchItemWriter;
 import org.mybatis.spring.batch.MyBatisCursorItemReader;
 import org.mybatis.spring.batch.builder.MyBatisBatchItemWriterBuilder;
@@ -26,17 +27,18 @@ public class TestItem {
         return new MyBatisCursorItemReaderBuilder<Read>()
                 .sqlSessionFactory(readSqlSessionFactory)
 //                .parameterValues(new HashMap<>())
-                .queryId("com.example.batch.mapper.read.selectRead")
+                .queryId("com.example.batch.mapper.read.ReadMapper.selectRead")
                 .build();
     }
 
 
     @Bean(name = "itemWriterMybatis")
-    public MyBatisBatchItemWriter<Write> itemWriterMybatis(@Qualifier("readSqlSessionFactory") SqlSessionFactory writeSqlSessionFactory) {
+    public MyBatisBatchItemWriter<Write> itemWriterMybatis(@Qualifier("writeSqlSessionFactory") SqlSessionFactory writeSqlSessionFactory, @Qualifier("writeSqlSessionFactoryTemplate") SqlSessionTemplate sqlSessionTemplate) {
         log.info("itemWriter~~~~~~~~~~~~~");
         return new MyBatisBatchItemWriterBuilder<Write>()
                 .sqlSessionFactory(writeSqlSessionFactory)
-                .statementId("com.example.batch.mapper.write.inertWrite")
+                .sqlSessionTemplate(sqlSessionTemplate)
+                .statementId("com.example.batch.mapper.write.WriteMapper.inertWrite")
                 .build();
     }
 }

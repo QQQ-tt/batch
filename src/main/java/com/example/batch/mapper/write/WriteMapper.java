@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.batch.entity.write.Write;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 /**
  * <p>
  * 写 Mapper 接口

@@ -1,11 +1,11 @@
 package com.example.batch.config.datasource;
 
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -13,8 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-
-import javax.sql.DataSource;
 
 /**
  * @author qtx
@@ -36,10 +34,14 @@ public class DataSourceRead {
 
     @Bean(name = "readSqlSessionFactory")
     public SqlSessionFactory readSqlSessionFactory(@Qualifier("readDataSource") HikariDataSource dataSource) throws Exception {
+        MybatisConfiguration configuration = new MybatisConfiguration();
+        configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl.class);
         MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
+        sqlSessionFactoryBean.setConfiguration(configuration);
         // 这个是指定加载的xml 文件路径。
-        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mappers/read/*Mapper.xml"));
+        sqlSessionFactoryBean.setMapperLocations(
+                new PathMatchingResourcePatternResolver().getResources("classpath:mappers/read/*Mapper.xml"));
         return sqlSessionFactoryBean.getObject();
     }
 
