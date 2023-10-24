@@ -1,8 +1,12 @@
 package com.example.batch.mapper.write;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.batch.entity.write.ListWrite;
 import com.example.batch.entity.write.Write;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -16,5 +20,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface WriteMapper extends BaseMapper<Write> {
 
     int inertWrite(Write item);
+
+    int inertBatchWrite(ListWrite items);
 
 }

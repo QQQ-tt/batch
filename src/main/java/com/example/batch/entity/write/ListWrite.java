@@ -3,11 +3,11 @@ package com.example.batch.entity.write;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.batch.config.BaseEntity;
-import com.example.batch.entity.read.Read;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,11 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("write")
-public class Write extends BaseEntity implements Serializable {
+public class ListWrite extends BaseEntity implements Serializable {
 
-    @TableField("name")
-    private String name;
-
-    @TableField("code")
-    private String code;
+    private List<Write> items = new ArrayList<>();
 }

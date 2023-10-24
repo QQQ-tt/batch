@@ -31,7 +31,7 @@ public class TestController {
     public void handle() throws Exception {
         JobParameters parameters =
                 new JobParametersBuilder().addLocalDateTime("time", LocalDateTime.now())
-                        .addString("name", "Qtx")
+//                        .addString("name", "Qtx")
                         .toJobParameters();
         jobLauncher.run(job, parameters);
     }

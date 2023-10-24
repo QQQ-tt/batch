@@ -1,6 +1,7 @@
 package com.example.batch.job;
 
 import com.example.batch.entity.read.Read;
+import com.example.batch.entity.write.ListWrite;
 import com.example.batch.entity.write.Write;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -15,9 +16,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,12 +43,14 @@ public class TestItem {
 
     @StepScope
     @Bean(name = "itemWriterMybatis")
-    public MyBatisBatchItemWriter<Write> itemWriterMybatis(@Qualifier("writeSqlSessionFactory") SqlSessionFactory writeSqlSessionFactory, @Qualifier("writeSqlSessionFactoryTemplate") SqlSessionTemplate sqlSessionTemplate) {
+    public MyBatisBatchItemWriter<ListWrite> itemWriterMybatis(@Qualifier("writeSqlSessionFactory") SqlSessionFactory writeSqlSessionFactory, @Qualifier("writeSqlSessionFactoryTemplate") SqlSessionTemplate sqlSessionTemplate) {
         log.info("itemWriter~~~~~~~~~~~~~");
-        return new MyBatisBatchItemWriterBuilder<Write>()
+        return new MyBatisBatchItemWriterBuilder<ListWrite>()
                 .sqlSessionFactory(writeSqlSessionFactory)
                 .sqlSessionTemplate(sqlSessionTemplate)
-                .statementId("com.example.batch.mapper.write.WriteMapper.inertWrite")
+//                .statementId("com.example.batch.mapper.write.WriteMapper.inertWrite")
+                .statementId("com.example.batch.mapper.write.WriteMapper.inertBatchWrite")
+                .assertUpdates(Boolean.TRUE)
                 .build();
     }
 
