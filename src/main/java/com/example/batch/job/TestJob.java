@@ -25,9 +25,12 @@ public class TestJob {
 
 
     @Bean(name = "footballJob")
-    public Job footballJob(@Qualifier("testStepRead") Step step) {
+    public Job footballJob(@Qualifier("initStep") Step initStep, @Qualifier("testStepRead") Step testStepRead,
+                           @Qualifier("taskStep") Step taskStep) {
         return new JobBuilder("footballJob", jobRepository)
-                .start(step)
+                .start(initStep)
+                .next(testStepRead)
+                .next(taskStep)
                 .build();
     }
 

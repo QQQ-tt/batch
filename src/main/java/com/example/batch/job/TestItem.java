@@ -2,7 +2,6 @@ package com.example.batch.job;
 
 import com.example.batch.entity.read.Read;
 import com.example.batch.entity.write.ListWrite;
-import com.example.batch.entity.write.Write;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,7 +17,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
