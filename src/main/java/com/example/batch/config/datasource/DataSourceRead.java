@@ -35,7 +35,8 @@ public class DataSourceRead {
     @Bean(name = "readSqlSessionFactory")
     public SqlSessionFactory readSqlSessionFactory(@Qualifier("readDataSource") HikariDataSource dataSource) throws Exception {
         MybatisConfiguration configuration = new MybatisConfiguration();
-        configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl.class);
+//        configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl.class);
+        configuration.setLogImpl(org.apache.ibatis.logging.nologging.NoLoggingImpl.class);
         MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setConfiguration(configuration);

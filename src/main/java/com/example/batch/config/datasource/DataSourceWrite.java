@@ -36,7 +36,8 @@ public class DataSourceWrite {
     @Bean(name = "writeSqlSessionFactory")
     public SqlSessionFactory writeSqlSessionFactory(@Qualifier("writeDataSource") HikariDataSource dataSource) throws Exception {
         MybatisConfiguration configuration = new MybatisConfiguration();
-        configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl.class);
+//        configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl.class);
+        configuration.setLogImpl(org.apache.ibatis.logging.nologging.NoLoggingImpl.class);
         configuration.setDefaultExecutorType(ExecutorType.BATCH);
         MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);

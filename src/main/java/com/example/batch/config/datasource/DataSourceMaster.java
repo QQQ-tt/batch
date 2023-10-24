@@ -1,5 +1,6 @@
 package com.example.batch.config.datasource;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
@@ -40,8 +41,16 @@ public class DataSourceMaster {
     public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") HikariDataSource dataSource, MybatisPlusInterceptor mybatisPlusInterceptor, MyMetaObjectHandler myMetaObjectHandler) throws Exception {
         MybatisConfiguration configuration = new MybatisConfiguration();
         configuration.setLogImpl(org.apache.ibatis.logging.stdout.StdOutImpl.class);
+        configuration.setMapUnderscoreToCamelCase(Boolean.TRUE);
+        configuration.setCallSettersOnNulls(Boolean.TRUE);
         MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
         GlobalConfig globalConfig = new GlobalConfig();
+        GlobalConfig.DbConfig config = new GlobalConfig.DbConfig();
+        config.setIdType(IdType.AUTO);
+        config.setLogicDeleteField("deleteFlag");
+        config.setLogicDeleteValue("1");
+        config.setLogicNotDeleteValue("0");
+        globalConfig.setDbConfig(config);
         globalConfig.setMetaObjectHandler(myMetaObjectHandler);
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setConfiguration(configuration);

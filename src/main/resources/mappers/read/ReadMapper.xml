@@ -3,7 +3,7 @@
 <mapper namespace="com.example.batch.mapper.read.ReadMapper">
 
     <select id="selectRead" resultType="com.example.batch.entity.read.Read">
-        select `name`,`code` from `read`
+        select name, code, code1, code2, code3, code4, code5, code6, code7, code8, time from `read`
          <if test="name != null and name != ''">
              where `name` = #{name}
          </if>

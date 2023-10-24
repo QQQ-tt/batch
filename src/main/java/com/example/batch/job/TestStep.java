@@ -11,6 +11,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,8 @@ public class TestStep {
     private final WriteMapper writeMapper;
 
     private static final ListWrite cachedDataList = new ListWrite();
+
+    private static final int SAVE_SIZE = 500;
 
     public TestStep(JobRepository jobRepository,
                     PlatformTransactionManager transactionManager, WriteMapper writeMapper) {
@@ -60,21 +63,20 @@ public class TestStep {
     public Step step(@Qualifier("itemReaderMybatis") MyBatisCursorItemReader<Read> itemReaderMybatis,
                      @Qualifier("itemWriterMybatis") MyBatisBatchItemWriter<ListWrite> itemWriterMybatis) {
         return new StepBuilder("testStepRead", jobRepository)
-                .<Read, ListWrite>chunk(100, transactionManager)
+                .<Read, ListWrite>chunk(SAVE_SIZE, transactionManager)
                 .reader(itemReaderMybatis)
                 .processor(item -> {
                     if (cachedDataList.getItems()
-                            .size() >= 100) {
+                            .size() >= SAVE_SIZE) {
                         cachedDataList.getItems()
                                 .clear();
                     }
+                    Write write = new Write();
+                    BeanUtils.copyProperties(item, write);
                     cachedDataList.getItems()
-                            .add(Write.builder()
-                                    .code(item.getCode())
-                                    .name(item.getName())
-                                    .build());
+                            .add(write);
                     if (cachedDataList.getItems()
-                            .size() >= 100) {
+                            .size() >= SAVE_SIZE) {
                         return cachedDataList;
                     }
                     return null;
@@ -88,7 +90,8 @@ public class TestStep {
     public Step taskStep() {
         return new StepBuilder("taskStep", jobRepository).tasklet((contribution, chunkContext) -> {
                             if (!cachedDataList.getItems()
-                                    .isEmpty()) {
+                                    .isEmpty() && cachedDataList.getItems()
+                                    .size() != SAVE_SIZE) {
                                 writeMapper.inertBatchWrite(cachedDataList);
                                 log.info("存储数据库成功！再次存储：{}", cachedDataList.getItems()
                                         .size());
