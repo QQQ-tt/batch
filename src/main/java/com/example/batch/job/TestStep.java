@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
@@ -31,7 +32,7 @@ public class TestStep {
 
     private final WriteMapper writeMapper;
 
-    private static final ListWrite cachedDataList = new ListWrite();
+    private static final ListWrite<Write> cachedDataList = new ListWrite<>();
 
     private static final int SAVE_SIZE = 500;
 
@@ -61,9 +62,9 @@ public class TestStep {
 
     @Bean("testStepRead")
     public Step step(@Qualifier("itemReaderMybatis") MyBatisCursorItemReader<Read> itemReaderMybatis,
-                     @Qualifier("itemWriterMybatis") MyBatisBatchItemWriter<ListWrite> itemWriterMybatis) {
+                     @Qualifier("itemWriterMybatis") MyBatisBatchItemWriter<ListWrite<Write>> itemWriterMybatis) {
         return new StepBuilder("testStepRead", jobRepository)
-                .<Read, ListWrite>chunk(SAVE_SIZE, transactionManager)
+                .<Read, ListWrite<Write>>chunk(SAVE_SIZE, transactionManager)
                 .reader(itemReaderMybatis)
                 .processor(item -> {
                     if (cachedDataList.getItems()
@@ -83,6 +84,7 @@ public class TestStep {
                 })
                 .writer(itemWriterMybatis)
                 .allowStartIfComplete(true)
+                .taskExecutor(new SimpleAsyncTaskExecutor())
                 .build();
     }
 

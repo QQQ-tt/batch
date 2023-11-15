@@ -18,12 +18,11 @@ import java.util.List;
  */
 @Getter
 @Setter
-@Builder
-@Component
-@AllArgsConstructor
-@NoArgsConstructor
-@TableName("write")
-public class ListWrite extends BaseEntity implements Serializable {
+public class ListWrite<T> {
 
-    private List<Write> items = new ArrayList<>();
+    private String startTime;
+
+    private String endTime;
+
+    private List<T> items = new ArrayList<>();
 }

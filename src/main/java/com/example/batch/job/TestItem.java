@@ -2,6 +2,7 @@ package com.example.batch.job;
 
 import com.example.batch.entity.read.Read;
 import com.example.batch.entity.write.ListWrite;
+import com.example.batch.entity.write.Write;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -41,9 +42,9 @@ public class TestItem {
 
     @StepScope
     @Bean(name = "itemWriterMybatis")
-    public MyBatisBatchItemWriter<ListWrite> itemWriterMybatis(@Qualifier("writeSqlSessionFactory") SqlSessionFactory writeSqlSessionFactory, @Qualifier("writeSqlSessionFactoryTemplate") SqlSessionTemplate sqlSessionTemplate) {
+    public MyBatisBatchItemWriter<ListWrite<Write>> itemWriterMybatis(@Qualifier("writeSqlSessionFactory") SqlSessionFactory writeSqlSessionFactory, @Qualifier("writeSqlSessionFactoryTemplate") SqlSessionTemplate sqlSessionTemplate) {
         log.info("itemWriter~~~~~~~~~~~~~");
-        return new MyBatisBatchItemWriterBuilder<ListWrite>()
+        return new MyBatisBatchItemWriterBuilder<ListWrite<Write>>()
                 .sqlSessionFactory(writeSqlSessionFactory)
                 .sqlSessionTemplate(sqlSessionTemplate)
 //                .statementId("com.example.batch.mapper.write.WriteMapper.inertWrite")
